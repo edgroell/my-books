@@ -165,18 +165,20 @@ a:hover {
     transform: translateY(0);
 }
 
+/* --- Search Form --- */
 .search-form {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 2em;
-    gap: 0.5em;
+    gap: 0.8em;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .search-input {
-    width: auto;
-    flex: 1;
-    min-width: 150px;
-    max-width: 400px;
+    width: 100%;
     padding: 0.8em 1em;
     border: 1px solid var(--border-color-neutral);
     border-radius: 6px;
@@ -192,6 +194,7 @@ a:hover {
 }
 
 .search-button {
+    width: 100%;
     padding: 0.8em 1.5em;
     background-color: var(--primary-accent);
     color: white;
@@ -201,7 +204,6 @@ a:hover {
     font-size: 1em;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.1s ease;
-    flex-shrink: 0;
 }
 
 .search-button:hover {
