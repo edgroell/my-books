@@ -30,7 +30,7 @@ def index():
 
     query = Book.query
 
-    if sort_by == 'author':
+    if sort_by == 'author' or search_query:
         query = query.join(Author)
 
     if search_query:
@@ -162,7 +162,7 @@ def add_book():
 
 @app.route('/book/<int:book_id>/delete', methods=['GET', 'POST'])
 def delete_book(book_id):
-    book = Book.query.get(book_id)
+    book = Book.query.options(db.joinedload(Book.author)).get(book_id)
 
     if not book:
         flash('Book not found!', 'error')
