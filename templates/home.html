@@ -21,7 +21,7 @@
             {% endif %}
         {% endwith %}
 
-        <h2>Most Inspiring Books Ever Written</h2> {# You changed this heading #}
+        <h2>Most Inspiring Books Ever Written</h2>
 
         <div class="sort-options">
             <span>Sort by:</span>
@@ -77,11 +77,9 @@
                             <p>Published: {{ book.publication_year }}</p>
                         </div>
                     </div>
-                    {# <<< NEW: DELETE BUTTON ADDED HERE >>> #}
                     <div class="book-actions">
                         <a href="{{ url_for('delete_book', book_id=book.id) }}" class="delete-link">Delete Book</a>
                     </div>
-                    {# <<< END NEW >>> #}
                 </li>
             {% endfor %}
             </ul>

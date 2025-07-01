@@ -1,3 +1,9 @@
+"""
+My Books app
+by Ed Groell
+Latest: 01-JUL-2025
+"""
+
 import os
 from datetime import datetime
 
@@ -9,13 +15,16 @@ from data.data_models import db, Author, Book
 app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data', 'library.sqlite')
+app.config['SQLALCHEMY_DATABASE_URI'] = ('sqlite:///' +
+                                         os.path.join(basedir, 'data', 'library.sqlite'))
 db.init_app(app)
 
 app.config['SECRET_KEY'] = 'a_very_secret_key_that_I_would_change_in_production'
 
+
 @app.route('/')
 def index():
+    """ Handles all features of the index route """
     sort_by = request.args.get('sort_by', 'title')
     order = request.args.get('order', 'asc')
     search_query = request.args.get('search_query', '').strip()
@@ -53,8 +62,10 @@ def index():
                            current_order=order,
                            search_query=search_query)
 
+
 @app.route('/add_author', methods=['GET', 'POST'])
 def add_author():
+    """ Handles all features of the add_author route """
     if request.method == 'POST':
         name = request.form.get('name')
         birth_date_str = request.form.get('birth_date')
@@ -62,6 +73,7 @@ def add_author():
 
         if not name or not birth_date_str:
             flash('Name and Birth Date are required fields!', 'error')
+
             return render_template('add_author.html',
                                    name=name,
                                    birth_date=birth_date_str,
@@ -81,6 +93,7 @@ def add_author():
             try:
                 death_date = datetime.strptime(death_date_str, '%Y-%m-%d').date()
             except ValueError:
+
                 return render_template('add_author.html',
                                        name=name,
                                        birth_date=birth_date_str,
@@ -92,10 +105,13 @@ def add_author():
             db.session.add(author)
             db.session.commit()
             flash(f"Author '{name}' added successfully!", "success")
+
             return redirect(url_for('index'))
+
         except Exception as e:
             db.session.rollback()
             flash(f'An error occurred: {e}', 'error')
+
             return render_template('add_author.html',
                                    name=name,
                                    birth_date=birth_date_str,
@@ -103,8 +119,10 @@ def add_author():
 
     return render_template('add_author.html')
 
+
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
+    """ Handles all features of the add_book route """
     authors = Author.query.order_by(Author.name).all()
 
     template_context = {
@@ -124,15 +142,19 @@ def add_book():
 
         if not isbn or not title or not publication_year_str or not author_id:
             flash('All fields are required!', 'error')
+
             return render_template('add_book.html', **template_context)
 
         try:
             publication_year = int(publication_year_str)
-            if not (1000 <= publication_year <= datetime.now().year + 5):
+            if not 1000 <= publication_year <= datetime.now().year + 5:
                 flash('Publication Year seems unrealistic. Please check.', 'error')
+
                 return render_template('add_book.html', **template_context)
+
         except ValueError:
             flash('Publication Year must be a valid number!', 'error')
+
             return render_template('add_book.html', **template_context)
 
         try:
@@ -140,9 +162,12 @@ def add_book():
             existing_author = Author.query.get(author_id)
             if not existing_author:
                 flash('Selected Author does not exist!', 'error')
+
                 return render_template('add_book.html', **template_context)
+
         except ValueError:
             flash('Invalid Author selection!', 'error')
+
             return render_template('add_book.html', **template_context)
 
         book = Book(isbn=isbn, title=title, publication_year=publication_year, author_id=author_id)
@@ -151,10 +176,13 @@ def add_book():
             db.session.add(book)
             db.session.commit()
             flash(f"Book '{title}' added successfully!", "success")
+
             return redirect(url_for('index'))
+
         except Exception as e:
             db.session.rollback()
             flash(f'An error occurred: {e}', 'error')
+
             return render_template('add_book.html', **template_context)
 
     return render_template('add_book.html', **template_context)
@@ -162,23 +190,30 @@ def add_book():
 
 @app.route('/book/<int:book_id>/delete', methods=['GET', 'POST'])
 def delete_book(book_id):
+    """ Handles all features of the delete_book route """
     book = Book.query.options(db.joinedload(Book.author)).get(book_id)
 
     if not book:
         flash('Book not found!', 'error')
+
         return redirect(url_for('index'))
 
     if request.method == 'POST':
         try:
             db.session.delete(book)
             db.session.commit()
-            flash(f"Book '{book.title}' by {book.author.name if book.author else 'Unknown Author'} deleted successfully!", "success")
+            flash(f"Book '{book.title}' "
+                  f"by {book.author.name if book.author else 'Unknown Author'} "
+                  f"deleted successfully!", "success")
             return redirect(url_for('index'))
         except Exception as e:
             db.session.rollback()
             flash(f'An error occurred while deleting the book: {e}', 'error')
+
             return redirect(url_for('index'))
+
     else:
+
         return render_template('delete_confirm.html', book=book)
 
 

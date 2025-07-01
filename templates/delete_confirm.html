@@ -22,8 +22,9 @@
         {% endwith %}
 
         {% if book %}
-            <p>Are you sure you want to delete the following book?</p>
-            <div class="book-item"> {# Re-use book-item styling for consistency #}
+            <h3>Are you sure you want to delete the following book?</h3>
+            <br>
+            <div class="book-item">
                 <div class="book-info-top">
                     {% if book.isbn %}
                         <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
@@ -37,7 +38,7 @@
                     {% endif %}
 
                     <div class="book-details-text">
-                        <h3>"{{ book.title }}"</h3>
+                        <h3>{{ book.title }}</h3>
                         <p class="book-author">
                             {% if book.author %}
                                 by {{ book.author.name }}
@@ -52,9 +53,9 @@
             </div>
 
             <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" class="delete-confirm-form">
-                <button type="submit" class="button-link delete-button">Yes, Delete This Book</button>
+                <button type="submit" class="button-link delete-button">Yes, delete this book</button>
             </form>
-            <p class="back-link"><a href="{{ url_for('index') }}">No, Go Back</a></p>
+            <p class="back-link"><a href="{{ url_for('index') }}">No, go back</a></p>
         {% else %}
             <p class="empty-message">Book not found for deletion.</p>
             <p class="back-link"><a href="{{ url_for('index') }}">Back to Home</a></p>

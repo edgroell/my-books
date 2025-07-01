@@ -1,8 +1,13 @@
+"""
+Module containing all data models of the app
+"""
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
 class Author(db.Model):
+    """ Contains all instances of Authors """
     __tablename__ = 'authors'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(80), nullable=False)
@@ -18,6 +23,7 @@ class Author(db.Model):
         return f"<Author(name='{self.name}', birth_date='{self.birth_date}')>"
 
 class Book(db.Model):
+    """ Contains all instances of Books """
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     isbn = db.Column(db.String(20), nullable=False)

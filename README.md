@@ -3,7 +3,7 @@
 
 This app aims at collecting all your favorite books (or all that you want really) and display this collection into a beautiful HTML frontend.
 
-![img.png](img.png)
+![img.png](static/images/img.png)
 
 ## Installation
 
@@ -35,6 +35,8 @@ As of _01-JUL-2025_, project is: _in progress_
 > - Delete an author
 > - Book rating
 > - Based on list, AI could recommend a future read...
+> - Edit book to update the ISBN (different from e.g., paperback to audiobook)
+> - favicon
 
 ## Acknowledgements
 
