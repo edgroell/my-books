@@ -7,7 +7,7 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(80), nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
-    date_of_death = db.Column(db.Date, nullable=True)
+    death_date = db.Column(db.Date, nullable=True)
     def __repr__(self):
         return f"<Author(id='{self.id}', name='{self.name}')>"
     def __str__(self):
@@ -26,5 +26,3 @@ class Book(db.Model):
     def __str__(self):
         author_name = self.author.name if self.author else "Unknown Author"
         return f"<Book(title='{self.title}', author='{author_name}', publication_year='{self.publication_year}')>"
-
-

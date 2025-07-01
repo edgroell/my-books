@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add New Author</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Author</h1>
+
+        {# Flash messages display block #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="flash {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('add_author') }}">
+            <label for="name">Author Name:</label>
+            <input type="text" id="name" name="name" value="{{ name or '' }}" required>
+
+            <label for="birth_date">Birthdate:</label>
+            <input type="date" id="birth_date" name="birth_date" value="{{ birth_date or '' }}" required>
+
+            <label for="date_of_death">Date of Death:</label>
+            <input type="date" id="death_date" name="death_date" value="{{ death_date or '' }}">
+
+            <button type="submit">Add Author</button>
+        </form>
+
+        <p class="back-link"><a href="{{ url_for('index') }}">Back to Home</a></p>
+    </div>
+</body>
+</html>

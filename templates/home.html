@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>My Books</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="flash {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form method="GET" action="{{ url_for('index') }}" class="search-form"> {# NEW: Search Form #}
+            <input type="text" name="search_query" class="search-input"
+                   placeholder="Search by title or author..." value="{{ search_query or '' }}">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
+        <div class="sort-options">
+            <span>Sort by:</span>
+            {% set sort_options = [
+                ('title', 'Title'),
+                ('author', 'Author'),
+                ('publication_year', 'Year')
+            ] %}
+            {% for key, label in sort_options %}
+                {% set new_order = 'desc' if current_sort_by == key and current_order == 'asc' else 'asc' %}
+                <a href="{{ url_for('index', sort_by=key, order=new_order, search_query=search_query) }}" {# IMPORTANT: Preserve search_query on sort links #}
+                   class="sort-link {% if current_sort_by == key %}active{% endif %}">
+                    {{ label }}
+                    {% if current_sort_by == key %}
+                        {% if current_order == 'asc' %} &#9650; {% else %} &#9660;{% endif %}
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+
+        {% if books %}
+            <h2>Our Collection</h2>
+            <ul class="book-list">
+            {% for book in books %}
+                <li class="book-item">
+                    <div class="book-info-top">
+                        {% if book.isbn %}
+                            <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+                                 alt="Cover of {{ book.title }}"
+                                 class="book-cover"
+                                 onerror="this.onerror=null;this.src='{{ url_for('static', filename='no_cover.png') }}';" />
+                        {% else %}
+                            <img src="{{ url_for('static', filename='no_cover.png') }}"
+                                 alt="No cover available"
+                                 class="book-cover" />
+                        {% endif %}
+
+                        <div class="book-details-text">
+                            <h3>"{{ book.title }}"</h3>
+                            <p class="book-author">
+                                {% if book.author %}
+                                    by {{ book.author.name }}
+                                {% else %}
+                                    by Unknown Author
+                                {% endif %}
+                            </p>
+                            <p>ISBN: {{ book.isbn or 'N/A' }}</p>
+                            <p>Published: {{ book.publication_year }}</p>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            {# UPDATED: Message for no books, consider search #}
+            <p class="empty-message">
+                Looks like the shelves are a bit bare...
+                {% if search_query %}
+                    No books found matching "{{ search_query }}".
+                    <br><a href="{{ url_for('index') }}">Clear search and view all books.</a>
+                {% else %}
+                    Time to <a href="{{ url_for('add_book') }}">add some books</a>!
+                {% endif %}
+            </p>
+        {% endif %}
+
+        <div class="navigation-links">
+            <a href="{{ url_for('add_book') }}" class="button-link">Add a New Book</a>
+            <a href="{{ url_for('add_author') }}" class="button-link secondary-button-link">Add a New Author</a>
+        </div>
+    </div>
+</body>
+</html>
