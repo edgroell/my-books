@@ -11,7 +11,6 @@
     <div class="container">
         <h1>Add New Author</h1>
 
-        {# Flash messages display block #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <ul class="flashes">
@@ -29,7 +28,7 @@
             <label for="birth_date">Birthdate:</label>
             <input type="date" id="birth_date" name="birth_date" value="{{ birth_date or '' }}" required>
 
-            <label for="date_of_death">Date of Death:</label>
+            <label for="death_date">Date of Death:</label>
             <input type="date" id="death_date" name="death_date" value="{{ death_date or '' }}">
 
             <button type="submit">Add Author</button>

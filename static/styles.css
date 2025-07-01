@@ -1,9 +1,18 @@
+/*
+ * styles.css
+ * This file contains the complete styling for My Books App.
+ */
+
+/* Import Google Fonts for a modern look */
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@600;700&display=swap');
 
+/* --- Modern Color Palette and Fonts with CSS Variables --- */
 :root {
+    /* Fonts */
     --font-family-body: 'Lato', sans-serif;
     --font-family-heading: 'Montserrat', sans-serif;
 
+    /* Colors - Dark Grey Palette */
     --primary-accent: #495057;
     --primary-accent-dark: #212529;
     --secondary-accent-light: #e9ecef;
@@ -16,6 +25,7 @@
     --book-item-bg: #fbfbfb;
     --border-color-neutral: #dee2e6;
 
+    /* Flash Message Colors */
     --flash-error-bg: #fdd8d8;
     --flash-error-text: #c0392b;
     --flash-error-border: #f8baba;
@@ -25,6 +35,7 @@
     --flash-success-border: #b0e9b0;
 }
 
+/* --- General Body and Layout --- */
 body {
     font-family: var(--font-family-body);
     line-height: 1.6;
@@ -45,6 +56,7 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
+/* --- Headings --- */
 h1, h2, h3 {
     font-family: var(--font-family-heading);
     color: var(--primary-accent);
@@ -70,6 +82,7 @@ h3 {
     margin-bottom: 0.1em;
 }
 
+/* --- Paragraphs and Links --- */
 p {
     margin-bottom: 1em;
 }
@@ -92,6 +105,7 @@ a:hover {
     font-weight: bold;
 }
 
+/* --- Navigation Links --- */
 .navigation-links {
     text-align: center;
     margin-top: 2.5em;
@@ -101,6 +115,8 @@ a:hover {
     flex-direction: column;
     align-items: center;
     gap: 1em;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 @media (min-width: 600px) {
@@ -119,8 +135,6 @@ a:hover {
     align-items: center;
     min-height: 48px;
     flex: 1;
-    max-width: 300px;
-
     padding: 1em 2em;
     background-color: var(--primary-accent);
     color: white;
@@ -171,10 +185,9 @@ a:hover {
     flex-direction: column;
     align-items: center;
     margin-bottom: 2em;
-    gap: 0.8em;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+    gap: 0.1em;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .search-input {
@@ -215,6 +228,7 @@ a:hover {
     transform: translateY(0);
 }
 
+/* --- Sort Options --- */
 .sort-options {
     text-align: center;
     margin-bottom: 2em;
@@ -263,6 +277,7 @@ a:hover {
     color: white;
 }
 
+/* --- Flash Messages --- */
 .flashes {
     list-style: none;
     padding: 0;
@@ -290,6 +305,7 @@ a:hover {
     border-color: var(--flash-success-border);
 }
 
+/* --- Forms (General) --- */
 form {
     background-color: var(--card-bg-color);
     padding: 2em;
@@ -306,6 +322,7 @@ label {
     font-size: 1em;
 }
 
+/* General Input Styling (applies to standard forms like Add Book/Author) */
 input[type="text"],
 input[type="number"],
 input[type="date"],
@@ -354,6 +371,7 @@ button[type="submit"]:active {
     transform: translateY(0);
 }
 
+/* --- Book List on Homepage --- */
 .book-list {
     list-style: none;
     padding: 0;
@@ -416,6 +434,7 @@ button[type="submit"]:active {
     margin-bottom: 0.4em;
 }
 
+/* --- Empty Message --- */
 .empty-message {
     text-align: center;
     font-size: 1.2em;

@@ -34,7 +34,8 @@ def index():
 
     if search_query:
         search_pattern = f"%{search_query}%"
-        query = query.filter(or_(Book.title.ilike(search_pattern), Author.name.ilike(search_pattern)))
+        query = query.filter(or_(Book.title.ilike(search_pattern),
+                                 Author.name.ilike(search_pattern)))
 
     query = query.options(db.joinedload(Book.author))
 
@@ -45,7 +46,11 @@ def index():
 
     books = query.all()
 
-    return render_template('home.html', books=books, current_sort_by=sort_by, current_order=order, search_query=search_query)
+    return render_template('home.html',
+                           books=books,
+                           current_sort_by=sort_by,
+                           current_order=order,
+                           search_query=search_query)
 
 @app.route('/add_author', methods=['GET', 'POST'])
 def add_author():
@@ -56,20 +61,29 @@ def add_author():
 
         if not name or not birth_date_str:
             flash('Name and Birth Date are required fields!', 'error')
-            return render_template('add_author.html', name=name, birth_date=birth_date_str,death_date=death_date_str)
+            return render_template('add_author.html',
+                                   name=name,
+                                   birth_date=birth_date_str,
+                                   death_date=death_date_str)
 
         try:
             birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
         except ValueError:
             flash('Birth Date is invalid! Please use YYY-MM-DD format.', 'error')
-            return render_template('add_author.html', name=name, birth_date=birth_date_str,death_date=death_date_str)
+            return render_template('add_author.html',
+                                   name=name,
+                                   birth_date=birth_date_str,
+                                   death_date=death_date_str)
 
         death_date = None
         if death_date_str:
             try:
                 death_date = datetime.strptime(death_date_str, '%Y-%m-%d').date()
             except ValueError:
-                return render_template('add_author.html', name=name, birth_date=birth_date_str,death_date=death_date_str)
+                return render_template('add_author.html',
+                                       name=name,
+                                       birth_date=birth_date_str,
+                                       death_date=death_date_str)
 
         author = Author(name=name, birth_date=birth_date, death_date=death_date)
 
@@ -81,7 +95,10 @@ def add_author():
         except Exception as e:
             db.session.rollback()
             flash(f'An error occurred: {e}', 'error')
-            return render_template('add_author.html', name=name, birth_date=birth_date_str, death_date=death_date_str)
+            return render_template('add_author.html',
+                                   name=name,
+                                   birth_date=birth_date_str,
+                                   death_date=death_date_str)
 
     return render_template('add_author.html')
 

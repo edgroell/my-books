@@ -21,11 +21,7 @@
             {% endif %}
         {% endwith %}
 
-        <form method="GET" action="{{ url_for('index') }}" class="search-form"> {# NEW: Search Form #}
-            <input type="text" name="search_query" class="search-input"
-                   placeholder="Search by title or author..." value="{{ search_query or '' }}">
-            <button type="submit" class="search-button">Search</button>
-        </form>
+        <h2>Most Inspiring Books Ever Written</h2>
 
         <div class="sort-options">
             <span>Sort by:</span>
@@ -36,7 +32,7 @@
             ] %}
             {% for key, label in sort_options %}
                 {% set new_order = 'desc' if current_sort_by == key and current_order == 'asc' else 'asc' %}
-                <a href="{{ url_for('index', sort_by=key, order=new_order, search_query=search_query) }}" {# IMPORTANT: Preserve search_query on sort links #}
+                <a href="{{ url_for('index', sort_by=key, order=new_order, search_query=search_query) }}"
                    class="sort-link {% if current_sort_by == key %}active{% endif %}">
                     {{ label }}
                     {% if current_sort_by == key %}
@@ -46,8 +42,13 @@
             {% endfor %}
         </div>
 
+        <form method="GET" action="{{ url_for('index') }}" class="search-form">
+            <input type="text" name="search_query" class="search-input"
+                   placeholder="Search by title or author..." value="{{ search_query or '' }}">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
         {% if books %}
-            <h2>Our Collection</h2>
             <ul class="book-list">
             {% for book in books %}
                 <li class="book-item">
@@ -64,7 +65,7 @@
                         {% endif %}
 
                         <div class="book-details-text">
-                            <h3>"{{ book.title }}"</h3>
+                            <h3>{{ book.title }}</h3>
                             <p class="book-author">
                                 {% if book.author %}
                                     by {{ book.author.name }}
@@ -80,7 +81,6 @@
             {% endfor %}
             </ul>
         {% else %}
-            {# UPDATED: Message for no books, consider search #}
             <p class="empty-message">
                 Looks like the shelves are a bit bare...
                 {% if search_query %}
