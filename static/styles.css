@@ -434,6 +434,48 @@ button[type="submit"]:active {
     margin-bottom: 0.4em;
 }
 
+.book-actions {
+    text-align: right;
+    margin-top: 1em;
+    padding-top: 0.8em;
+    border-top: 1px dashed var(--border-color-neutral);
+}
+
+.delete-link {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.delete-link:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Styles for the confirmation page button */
+.delete-confirm-form {
+    text-align: center;
+    margin-top: 2em;
+}
+
+.delete-button {
+    /* Inherits most styles from .button-link, just override color */
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+    color: white;
+}
+
 /* --- Empty Message --- */
 .empty-message {
     text-align: center;

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Confirm Delete</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Confirm Deletion</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="flash {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% if book %}
+            <p>Are you sure you want to delete the following book?</p>
+            <div class="book-item"> {# Re-use book-item styling for consistency #}
+                <div class="book-info-top">
+                    {% if book.isbn %}
+                        <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+                             alt="Cover of {{ book.title }}"
+                             class="book-cover"
+                             onerror="this.onerror=null;this.src='{{ url_for('static', filename='no_cover.png') }}';" />
+                    {% else %}
+                        <img src="{{ url_for('static', filename='no_cover.png') }}"
+                             alt="No cover available"
+                             class="book-cover" />
+                    {% endif %}
+
+                    <div class="book-details-text">
+                        <h3>"{{ book.title }}"</h3>
+                        <p class="book-author">
+                            {% if book.author %}
+                                by {{ book.author.name }}
+                            {% else %}
+                                by Unknown Author
+                            {% endif %}
+                        </p>
+                        <p>ISBN: {{ book.isbn or 'N/A' }}</p>
+                        <p>Published: {{ book.publication_year }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" class="delete-confirm-form">
+                <button type="submit" class="button-link delete-button">Yes, Delete This Book</button>
+            </form>
+            <p class="back-link"><a href="{{ url_for('index') }}">No, Go Back</a></p>
+        {% else %}
+            <p class="empty-message">Book not found for deletion.</p>
+            <p class="back-link"><a href="{{ url_for('index') }}">Back to Home</a></p>
+        {% endif %}
+    </div>
+</body>
+</html>

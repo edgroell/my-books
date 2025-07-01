@@ -10,8 +10,9 @@ app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data', 'library.sqlite')
-app.config['SECRET_KEY'] = 'a_very_secret_key_that_I_would_change_in_production'
 db.init_app(app)
+
+app.config['SECRET_KEY'] = 'a_very_secret_key_that_I_would_change_in_production'
 
 @app.route('/')
 def index():
@@ -157,6 +158,29 @@ def add_book():
             return render_template('add_book.html', **template_context)
 
     return render_template('add_book.html', **template_context)
+
+
+@app.route('/book/<int:book_id>/delete', methods=['GET', 'POST'])
+def delete_book(book_id):
+    book = Book.query.get(book_id)
+
+    if not book:
+        flash('Book not found!', 'error')
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        try:
+            db.session.delete(book)
+            db.session.commit()
+            flash(f"Book '{book.title}' by {book.author.name if book.author else 'Unknown Author'} deleted successfully!", "success")
+            return redirect(url_for('index'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'An error occurred while deleting the book: {e}', 'error')
+            return redirect(url_for('index'))
+    else:
+        return render_template('delete_confirm.html', book=book)
+
 
 if __name__ == '__main__':
     # with app.app_context():
